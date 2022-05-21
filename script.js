@@ -7,22 +7,21 @@ upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
 
 anumericChar = "1234567890";
 
-specialChar = " !'#$%&()*+,-./:;<=>?@[\]^_`{|}~"+'"';
+specialChar = " !'#$%&()*+,-./:;<=>?@[]^_`{|}~"+'"';
 
-passwordLength = "";
-
-passwordArray = "";
-
-var randomNum = function(min, max) {
-  value = Math.floor(Math.random() * (max - min + 1));
-  return value;
+var getNewPassword = function() {
+    for (var i = 0; i < passwordLength; i ++ ) {
+        value = Math.floor(Math.random() * passwordArray.length);
+        newPassword += passwordArray[value];
+    }
+    return newPassword;
 };
 
 // function to input length of password
 var getLengthPw = function () {
   // ask user for password length
   var lengthInput = window.prompt("Specify the length of your password. It must be at least 8 characters and no more than 128 characters.");
-    if (lengthInput > 8 && lengthInput < 128) {
+    if (lengthInput >= 8 && lengthInput <= 128) {
         return lengthInput;
     }
     // if user input a blank or special character or length did not fit requirements
@@ -64,14 +63,21 @@ var addSpecialChar = function() {
     }
 };
 
+// condition if none of the critera were selected
+if (passwordArray === "") {
+  window.alert("You need to select at least one character type to proceed.")
+}
+
 function generatePassword() {
   // add your logic here
+  passwordLength = "";
   passwordArray = "";
-  lengthInput = "";
+  newPassword = "";
+
   // Prompt user for the length of the password (8 - 128)
   getLengthPw();
   // Prompt user if they want to include lowercase characters
-
+ 
   // Prompt user if they want to include uppercase characters
   // Prompt user if they want to include numeric characters
   // Prompt user if they want to include special characters
