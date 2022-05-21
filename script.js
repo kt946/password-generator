@@ -1,20 +1,31 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-lowerCase = "abcdefghijklmnopqrstuvwxyz";
-
-upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-
-numericChar = "1234567890";
-
-specialChar = " !'#$%&()*+,-./:;<=>?@[\\]^_`{|}~"+'"';
+var passwordInfo = [
+  {
+    type: "lowercase",
+    characters: "abcdefghijklmnopqrstuvwxyz"
+  }, 
+  {
+    type: "uppercase",
+    characters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+  },
+  {
+    type: "numeric",
+    characters: "1234567890"
+  },
+  {
+    type: "special",
+    characters: " !'#$%&()*+,-./:;<=>?@[\\]^_`{|}~"+'"'
+}
+];
 
 var getNewPassword = function() {
-    for (var i = 0; i < passwordLength; i ++ ) {
-        value = Math.floor(Math.random() * passwordArray.length);
-        newPassword += passwordArray[value];
-    }
-    return newPassword;
+  for (var i = 0; i < passwordLength; i ++ ) {
+      randomNum = Math.floor(Math.random() * passwordArray.length);
+      newPassword += passwordArray[randomNum];
+  }
+  return newPassword;
 };
 
 // function to input length of password
@@ -29,7 +40,7 @@ var getLength = function () {
         window.alert("You did not input a valid length! Please try again!");
         getLength();
     }
-  };
+};
 
 // function to ask for lowercase characters
 var addLowerCase = function() {
