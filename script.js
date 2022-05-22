@@ -1,7 +1,10 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-var passwordInfo = [
+passwordLength = "";
+passwordArray = "";
+newPassword = "";
+passwordInfo = [
   {
     type: "lowercase",
     characters: "abcdefghijklmnopqrstuvwxyz"
@@ -17,61 +20,46 @@ var passwordInfo = [
   {
     type: "special",
     characters: " !'#$%&()*+,-./:;<=>?@[\\]^_`{|}~"+'"'
-}
-];
-
-var getNewPassword = function() {
-  for (var i = 0; i < passwordLength; i ++ ) {
-      randomNum = Math.floor(Math.random() * passwordArray.length);
-      newPassword += passwordArray[randomNum];
   }
-  return newPassword;
-};
+];
 
 // function to input length of password
 var getLength = function () {
   // ask user for password length
   var lengthInput = window.prompt("Specify the length of your password. It must be at least 8 characters and no more than 128 characters.");
-    if (lengthInput >= 8 && lengthInput <= 128) {
-        return lengthInput;
-    }
-    // if user input a blank or special character or length did not fit requirements
-    else {
-        window.alert("You did not input a valid length! Please try again!");
-        getLength();
-    }
+
+  if (lengthInput >= 8 && lengthInput <= 128) {
+    passwordLength = lengthInput;
+  }
+  // if user input a blank or special character or length did not fit requirements
+  else {
+    window.alert("You did not input a valid length! Please try again!");
+    getLength();
+  }
 };
 
-// function to ask for lowercase characters
-var addLowerCase = function() {
-  var confirmLowerCase = window.confirm("Would you like to include lowercase characters?");
-    if (confirmLowerCase) {
-      passwordArray += lowerCase;
+// function to ask for types of characters
+var getCharacterType = function() {
+  for (var i = 0; i < passwordInfo.length; i++) {
+    var criteria = passwordInfo[i]
+    var confirmType = window.confirm("Would you like to include " + criteria.type + " characters?");
+    if (confirmType) {
+      passwordArray += criteria.characters;
     }
+  }
+  // Validate input (at least one type must be selected)
+  if (passwordArray === "") {
+    window.alert("You need to select at least one character type to proceed.")
+    generatePassword();
+  }
 };
 
-// function to ask for uppercase characters
-var addUpperCase = function() {
-  var confirmUpperCase = window.confirm("Would you like to include uppercase characters?");
-    if (confirmUpperCase) {
-      passwordArray += upperCase;
-    }
-};
-
-// function to ask for numeric characters
-var addNumChar = function() {
-  var confirmNumChar = window.confirm("Would you like to include numeric characters?");
-    if (confirmNumChar) {
-      passwordArray += numericChar;
-    }
-};
-
-// function to ask for special characters
-var addSpecialChar = function() {
-  var confirmSpecialChar = window.confirm("Would you like to include special characters?");
-    if (confirmSpecialChar) {
-      passwordArray += specialChar;
-    }
+var getNewPassword = function() {
+  for (var i = 0; i < passwordLength; i ++ ) {
+    randomNum = Math.floor(Math.random() * passwordArray.length);
+    newPassword += passwordArray[randomNum];
+  }
+  return newPassword;
 };
 
 function generatePassword() {
@@ -82,23 +70,10 @@ function generatePassword() {
   newPassword = "";
 
   // Prompt user for the length of the password (8 - 128)
-  passwordLength = getLength();
-  // Prompt user if they want to include lowercase characters
-  addLowerCase();
-  // Prompt user if they want to include uppercase characters
-  addUpperCase();
-  // Prompt user if they want to include numeric characters
-  addNumChar();
-  // Prompt user if they want to include special characters
-  addSpecialChar();
-  // Validate input (between 8 - 128 characters, at least one type must be selected)
-  if (passwordArray === "") {
-    window.alert("You need to select at least one character type to proceed! Please try again!");
-    generatePassword();
-  };
-  // Generate password
+  getLength();
+  // Prompt user if they want to include lowercase, upper, numeric , and/or special characters
+  getCharacterType();
   newPassword = getNewPassword();
-
   // Display password to the page
   return newPassword;
 };
@@ -110,7 +85,6 @@ function writePassword() {
   var passwordText = document.querySelector("#password");
 
   passwordText.value = password;
-  debugger
 };
 
 // Add event listener to generate button
