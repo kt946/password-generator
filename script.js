@@ -1,10 +1,8 @@
 // Assignment Code
 var generateBtn = document.querySelector("#generate");
 
-passwordLength = "";
-passwordArray = "";
-newPassword = "";
-passwordInfo = [
+// object for password data
+var passwordInfo = [
   {
     type: "lowercase",
     characters: "abcdefghijklmnopqrstuvwxyz"
@@ -26,7 +24,7 @@ passwordInfo = [
 // function to input length of password
 var getLength = function () {
   // ask user for password length
-  var lengthInput = window.prompt("Specify the length of your password. It must be at least 8 characters and no more than 128 characters.");
+  var lengthInput = window.prompt("Enter the length of your password. It must be at least 8 characters and no more than 128 characters.");
 
   if (lengthInput >= 8 && lengthInput <= 128) {
     passwordLength = lengthInput;
@@ -41,39 +39,49 @@ var getLength = function () {
 // function to ask for types of characters
 var getCharacterType = function() {
   for (var i = 0; i < passwordInfo.length; i++) {
-    var criteria = passwordInfo[i]
-    var confirmType = window.confirm("Would you like to include " + criteria.type + " characters?");
+    var data = passwordInfo[i]
+    var confirmType = window.confirm("Would you like to include " + data.type + " characters?");
     if (confirmType) {
-      passwordArray += criteria.characters;
+      passwordString += data.characters;
     }
   }
   // Validate input (at least one type must be selected)
-  if (passwordArray === "") {
+  if (passwordString.length === 0) {
     window.alert("You need to select at least one character type to proceed.")
-    generatePassword();
+    getCharacterType();
   }
 };
 
+// function for generating password based on user input
 var getNewPassword = function() {
   for (var i = 0; i < passwordLength; i ++ ) {
-    randomNum = Math.floor(Math.random() * passwordArray.length);
-    newPassword += passwordArray[randomNum];
+    var randomNum = Math.floor(Math.random() * passwordString.length);
+    newPassword += passwordString[randomNum];
   }
-  return newPassword;
+};
+
+//function to reset variables
+var reset = function() {
+  passwordLength = "";
+  passwordString = "";
+  newPassword = "";
 };
 
 function generatePassword() {
   // add your logic here
-  // reset variables for new password
-  passwordLength = "";
-  passwordArray = "";
-  newPassword = "";
 
+  // reset variables for new password
+  reset();
+  
   // Prompt user for the length of the password (8 - 128)
   getLength();
-  // Prompt user if they want to include lowercase, upper, numeric , and/or special characters
+
+  // Prompt user if they want to include lowercase, upper, numeric, and/or special characters
   getCharacterType();
-  newPassword = getNewPassword();
+
+  // Generate password based on length and selected characters
+  getNewPassword();
+
   // Display password to the page
   return newPassword;
 };
